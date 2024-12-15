@@ -25,7 +25,7 @@ mongoose
 
 // ===> Rotas da API:
 const index = require("./routes/index");
-//TODO: DECLARAR ROTA user.routes.js;
+const userRoutes = require("./routes/user.routes");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -34,6 +34,6 @@ app.use(cors());
 app.use(morgan("dev"));
 
 app.use(index);
-// TODO: Incluir depois a chamada da rota 'user.routes.js';
+app.use("/api/v1", userRoutes);
 
 module.exports = app;
