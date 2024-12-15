@@ -4,7 +4,7 @@ const User = require("../models/user.models");
 
 // ==> Async e await
 
-// ==> Método responsável
+// ==> Método responsável por registrar novo usuário.
 exports.registerNewUser = async (req, res) => {
   try {
     let isUser = await User.find({ email: req.body.email });
@@ -30,8 +30,38 @@ exports.registerNewUser = async (req, res) => {
   }
 };
 
-// TODO LOGIN
-exports.loginUser = async (req, res) => {};
+// ==> Método responsável por logar o usuário.
+exports.loginUser = async (req, res) => {
+  try {
+    const email = req.body.email;
+    const password = req.body.password;
+    const user = await User.findByCredentials(email, password);
 
-// TODO LOGIN
-exports.returnUserProfile = async (req, res) => {};
+    if (!user) {
+      return res.status(401).json({
+        error: "Erro ao realizar o Login! Verifique suas credenciais.",
+      });
+    }
+
+    const token = await user.generateAuthToken();
+
+    res
+      .status(201)
+      .json({ messsage: "Usuário(a) logado(a) com sucesso!", user, token });
+
+  } catch (err) {
+    resizeBy.status(400).json({
+      err: err,
+    });
+  }
+};
+
+// TODO DADOS PESSOAIS
+exports.returnUserProfile = async (req, res) => {
+  try {
+  } catch (err) {
+    resizeBy.status(400).json({
+      err: err,
+    });
+  }
+};
