@@ -2,7 +2,7 @@ Dentro da pasta backend:
 
   Instalar:
 
-    npm i express mongoose body-parser cors jsonwebtoken bcrypt morgan dotenv eslint-friendly-formatter
+    npm i express mongoose body-parser cors jsonwebtoken bcrypt morgan dotenv
     npm i --save-dev nodemon
 
   Instalando globalmente: 
