@@ -1,0 +1,31 @@
+Dentro da pasta backend:
+
+  Instalar:
+
+    npm i express mongoose body-parser cors jsonwebtoken bcrypt morgan dotenv eslint-friendly-formatter
+    npm i --save-dev nodemon
+
+  Instalando globalmente: 
+    npm install -g eslint
+    npm install -g nodemon
+
+
+    E depois insira esse comando: eslint --init
+
+    Responder a pergunta 1:
+      To check syntax and find problems
+
+    Responder a pergunta 2:
+      CommonJs (require/exports)
+
+    Responder a pergunta 3:
+      None of these
+
+    Responder a pergunta 4:
+      No
+
+    Responder a pergunta 5:
+      Desmarcar a opção browser e marcar a opção node.
+
+    Responder a pergunta 6:
+      Yes
