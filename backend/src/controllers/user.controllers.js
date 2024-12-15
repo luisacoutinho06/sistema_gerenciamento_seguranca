@@ -48,7 +48,6 @@ exports.loginUser = async (req, res) => {
     res
       .status(201)
       .json({ messsage: "Usuário(a) logado(a) com sucesso!", user, token });
-
   } catch (err) {
     resizeBy.status(400).json({
       err: err,
@@ -56,9 +55,9 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-// TODO DADOS PESSOAIS
 exports.returnUserProfile = async (req, res) => {
   try {
+    await res.json(req.userData);
   } catch (err) {
     resizeBy.status(400).json({
       err: err,
