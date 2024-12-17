@@ -35,4 +35,5 @@ Dentro da pasta frontend:
   Instalar:
     npm i -g @vue/cli
     npm i vue-jwt-decode axios bootstrap
-    npm install -S vue-sweetalert2
+    npm install -S vue-sweetalert
+    npm install babel-eslint --save-dev
