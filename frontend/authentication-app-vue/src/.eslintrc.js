@@ -9,6 +9,7 @@ module.exports = {
   },
   rules: {
     'import/no-unresolved': 'off',
+    'vuejs-accessibility/label-has-for': 'off',
     'vue/no-unused-components': 'off',
     'vue/multi-word-component-names': 'off',
     'no-unresolved': 'off',

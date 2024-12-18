@@ -3,6 +3,17 @@
 export default {
   name: 'LoginComponent',
   data() {
-    return {};
+    return {
+      loginForm: {
+        email: null,
+        password: null,
+      },
+    };
+  },
+
+  methods: {
+    loginSubmitUserForm() {},
+
+    async submitLoginUser() {},
   },
 };

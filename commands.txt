@@ -37,3 +37,4 @@ Dentro da pasta frontend:
     npm i vue-jwt-decode axios bootstrap
     npm install -S vue-sweetalert
     npm install babel-eslint --save-dev
+    npm install chokidar
