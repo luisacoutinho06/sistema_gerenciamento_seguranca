@@ -14,6 +14,9 @@ const routes = [
     path: '/home',
     name: 'home',
     component: () => import('../components/home/HomeComponent.vue'),
+    meta: {
+      requireAuth: true,
+    },
   },
   {
     path: '/register',
@@ -26,6 +29,21 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+});
+
+// ==> Tratativa para evitar armazenamento do token no localStorage;
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requireAuth)) {
+    if (localStorage.getItem('jwt') == null) {
+      next({
+        path: '/',
+      });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
 });
 
 // ==> Lógica referente ao NProgress

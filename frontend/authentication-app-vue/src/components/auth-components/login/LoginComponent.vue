@@ -9,17 +9,18 @@
               alt="Wayne Industries Logo"
               class="wayne-logo"
             />
-            <h1>Indústrias Wayne</h1>
+            <h1 style="color: white;">Indústrias Wayne</h1>
             <p class="subtitle">A tecnologia do futuro, hoje.</p>
           </div>
 
           <form v-on:submit.prevent="loginSubmitUserForm">
             <div class="form-group">
-              <label for="email">E-mail</label>
+              <label for="email" style="color: white;">E-mail</label>
               <input
                 type="email"
                 id="email"
                 name="email"
+                color="white"
                 class="form-control"
                 placeholder="Digite seu e-mail"
                 v-model="loginForm.email"
@@ -28,24 +29,27 @@
               <div
                 v-if="isSubmitted && !$v.loginForm.email.required"
                 class="invalid-feedback"
+                style="color: white;"
               >
                 O campo e-mail é obrigatório!
               </div>
               <div
                 v-if="isSubmitted && !$v.loginForm.email.email"
                 class="invalid-feedback"
+                style="color: white;"
               >
                 O e-mail inserido não é válido!
               </div>
             </div>
 
             <div class="form-group" style="margin-top: 15px; margin-bottom: 15px">
-              <label for="password">Senha</label>
+              <label for="password" style="color: white;">Senha</label>
               <input
                 type="password"
                 id="password"
                 name="password"
                 class="form-control"
+                color="white"
                 placeholder="Digite sua senha"
                 v-model="loginForm.password"
                 :class="{ 'is-invalid': isSubmitted && $v.loginForm.password.$error }"
@@ -53,13 +57,14 @@
               <div
                 v-if="isSubmitted && !$v.loginForm.password.required"
                 class="invalid-feedback"
+                style="color: white;"
               >
                 O campo senha é obrigatório!
               </div>
             </div>
 
             <div class="form-footer">
-              <p>
+              <p style="color: white;">
                 Não tem uma conta?
                 <router-link to="/register">Cadastre-se aqui</router-link>
               </p>
@@ -117,7 +122,7 @@ body {
 }
 
 .subtitle {
-  color: #6c757d;
+  color: #ffffff;
   font-size: 0.9rem;
 }
 
@@ -203,4 +208,10 @@ body {
   width: 150px;
   margin-bottom: 1rem;
 }
+
+.form-control::placeholder {
+  color: rgb(141, 141, 141);
+  opacity: 1;
+}
+
 </style>

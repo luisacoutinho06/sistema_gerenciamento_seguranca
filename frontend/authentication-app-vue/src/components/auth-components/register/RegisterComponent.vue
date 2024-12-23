@@ -9,17 +9,18 @@
               alt="Wayne Industries Logo"
               class="wayne-logo"
             />
-            <h1>Indústrias Wayne</h1>
-            <p class="subtitle">A tecnologia do futuro, hoje.</p>
+            <h1 style="color: white">Indústrias Wayne</h1>
+            <p class="subtitle" style="color: white">A tecnologia do futuro, hoje.</p>
           </div>
 
           <form v-on:submit.prevent="registerSubmitUserForm">
             <div class="form-group" style="margin-bottom: 15px">
-              <label for="name">Nome</label>
+              <label for="name" style="color: white">Nome</label>
               <input
                 type="text"
                 id="name"
                 name="name"
+                color="white"
                 class="form-control"
                 placeholder="Insira o seu nome"
                 v-model="registerForm.name"
@@ -28,18 +29,20 @@
               <div
                 v-if="isSubmitted && !$v.registerForm.name.required"
                 class="invalid-feedback"
+                style="color: white"
               >
                 O campo nome é obrigatório!
               </div>
             </div>
 
             <div class="form-group">
-              <label for="email">E-mail</label>
+              <label for="email" style="color: white">E-mail</label>
               <input
                 type="email"
                 id="email"
                 name="email"
                 class="form-control"
+                color="white"
                 placeholder="Insira o seu e-mail"
                 v-model="registerForm.email"
                 :class="{ 'is-invalid': isSubmitted && $v.registerForm.email.$error }"
@@ -47,42 +50,49 @@
               <div
                 v-if="isSubmitted && !$v.registerForm.email.required"
                 class="invalid-feedback"
+                style="color: white"
               >
                 O campo e-mail é obrigatório!
               </div>
               <div
                 v-if="isSubmitted && !$v.registerForm.email.email"
                 class="invalid-feedback"
+                style="color: white"
               >
                 O e-mail inserido não é válido!
               </div>
             </div>
 
             <div class="form-group" style="margin-top: 15px; margin-bottom: 15px">
-              <label for="password">Senha</label>
+              <label for="password" style="color: white">Senha</label>
               <input
                 type="password"
                 id="password"
                 name="password"
+                color="white"
                 class="form-control"
                 placeholder="Insira sua senha"
                 v-model="registerForm.password"
                 :class="{ 'is-invalid': isSubmitted && $v.registerForm.password.$error }"
               />
-              <div
-                class="invalid-feedback"
-              >
-              <span v-if="isSubmitted && !$v.registerForm.password.required">
-                O campo senha é obrigatório!
-              </span>
-              <span v-if="isSubmitted && !$v.registerForm.password.minLength">
-                O campo senha deve ter obrigatoriamente mais de 8 caracteres!
-              </span>
+              <div class="invalid-feedback">
+                <span
+                  v-if="isSubmitted && !$v.registerForm.password.required"
+                  style="color: white"
+                >
+                  O campo senha é obrigatório!
+                </span>
+                <span
+                  v-if="isSubmitted && !$v.registerForm.password.minLength"
+                  style="color: white"
+                >
+                  O campo senha deve ter obrigatoriamente mais de 8 caracteres!
+                </span>
               </div>
             </div>
 
             <div class="form-footer text-center">
-              <p>
+              <p style="color: white">
                 Já possui um login cadastrado?
                 <router-link to="/">Faça o login</router-link>
               </p>
@@ -225,5 +235,10 @@ body {
 .wayne-logo {
   width: 150px;
   margin-bottom: 1rem;
+}
+
+.form-control::placeholder {
+  color: rgb(141, 141, 141);
+  opacity: 1;
 }
 </style>
