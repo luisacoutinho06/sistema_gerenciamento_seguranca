@@ -70,10 +70,14 @@
                 :class="{ 'is-invalid': isSubmitted && $v.registerForm.password.$error }"
               />
               <div
-                v-if="isSubmitted && !$v.registerForm.password.required"
                 class="invalid-feedback"
               >
+              <span v-if="isSubmitted && !$v.registerForm.password.required">
                 O campo senha é obrigatório!
+              </span>
+              <span v-if="isSubmitted && !$v.registerForm.password.minLength">
+                O campo senha deve ter obrigatoriamente mais de 8 caracteres!
+              </span>
               </div>
             </div>
 

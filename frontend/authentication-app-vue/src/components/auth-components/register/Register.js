@@ -1,6 +1,6 @@
 // DESCRIÇÃO: Arquivo responsável pela lógica do componente.
 
-import { required, email } from 'vuelidate/lib/validators';
+import { required, email, minLength } from 'vuelidate/lib/validators';
 import swal from 'sweetalert';
 import RegisterService from '../../../services/RegisterService';
 
@@ -21,7 +21,7 @@ export default {
     registerForm: {
       name: { required },
       email: { required, email },
-      password: { required },
+      password: { required, minLength: minLength(8) },
     },
   },
   methods: {
