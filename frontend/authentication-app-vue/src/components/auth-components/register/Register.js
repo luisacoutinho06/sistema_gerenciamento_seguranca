@@ -1,6 +1,8 @@
 // DESCRIÇÃO: Arquivo responsável pela lógica do componente.
 
 import { required, email } from 'vuelidate/lib/validators';
+import swal from 'sweetalert';
+import RegisterService from '../../../services/RegisterService';
 
 export default {
   name: 'RegisterComponent',
@@ -23,15 +25,29 @@ export default {
     },
   },
   methods: {
-    registerSubmitUserForm() {
-      this.isSubmitted = true;
-      this.$v.$touch();
-      if (this.$v.$invalid) {
-        return;
-      }
-      alert('SUCCESS!' + JSON.stringify(this.registerForm));
-    },
+    registerSubmitUserForm() {},
 
-    async submitRegisterUser() {},
+    async submitRegisterUser() {
+      try {
+        this.isSubmitted = true;
+        this.$v.$touch();
+        if (this.$v.$invalid) {
+          swal({
+            title: 'Oops!',
+            text: 'Você precisa preencher todos os campos obrigatórios.',
+            icon: 'error',
+          });
+          return;
+        }
+        await RegisterService.registerNewUser(this.registerForm);
+        this.$router.push('/');
+      } catch (error) {
+        swal({
+          title: 'Oops!',
+          text: 'Você precisa preencher todos os campos obrigatórios.',
+          icon: 'error',
+        });
+      }
+    },
   },
 };

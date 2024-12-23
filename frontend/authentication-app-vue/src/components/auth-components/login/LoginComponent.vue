@@ -39,7 +39,7 @@
               </div>
             </div>
 
-            <div class="form-group" style="margin-top: 15px; margin-bottom: 15px;">
+            <div class="form-group" style="margin-top: 15px; margin-bottom: 15px">
               <label for="password">Senha</label>
               <input
                 type="password"
@@ -63,7 +63,10 @@
                 Não tem uma conta?
                 <router-link to="/register">Cadastre-se aqui</router-link>
               </p>
-              <button type="submit" class="btn btn-primary btn-block login-btn">
+              <button
+                @click="submitLoginUser"
+                class="btn btn-primary btn-block login-btn"
+              >
                 Entrar
               </button>
             </div>

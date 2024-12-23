@@ -82,7 +82,10 @@
                 Já possui um login cadastrado?
                 <router-link to="/">Faça o login</router-link>
               </p>
-              <button type="submit" class="btn btn-primary btn-block register-btn">
+              <button
+                @click="submitRegisterUser"
+                class="btn btn-primary btn-block register-btn"
+              >
                 Registrar
               </button>
             </div>
