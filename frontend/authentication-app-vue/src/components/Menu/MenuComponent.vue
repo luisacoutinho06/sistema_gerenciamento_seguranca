@@ -3,7 +3,7 @@
     <nav class="navbar">
       <div class="navbar-left">
         <a href="/" class="logo">
-          <img src="../../assets/logo.png" alt="Logo" class="logo-img" />
+          <img src="../../assets/wayne_industrias_logo.png" alt="Logo" class="logo-img" />
         </a>
 
         <ul class="navbar-items">
@@ -16,17 +16,22 @@
       <div class="navbar-right">
         <div class="user-menu">
           <img
-            src="../../assets/wayne_industrias_logo.png"
+            src="../../assets/logo_user.webp"
             alt="Usuário"
             class="user-icon"
+            @click="toggleDropdown"
+            @keydown.enter="toggleDropdown"
+            @keydown.space="toggleDropdown"
+            tabindex="0"
           />
         </div>
 
-        <div class="user-dropdown">
+        <!-- Submenu exibido condicionalmente -->
+        <div class="user-dropdown" v-if="isDropdownVisible">
           <ul>
-            <li><a href="/perfil">Perfil</a></li>
+            <li><a href="/home">Perfil</a></li>
             <li>
-              <button @click="logoutUser" class="logout-btn">LogOut</button>
+              <button @click="logOutUser" class="logout-btn">LogOut</button>
             </li>
           </ul>
         </div>
@@ -86,7 +91,7 @@ export default {
 }
 
 .user-icon {
-  width: 40px;
+  width: 75px;
   height: 40px;
   cursor: pointer;
 }
@@ -98,7 +103,7 @@ export default {
   background-color: #444;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  z-index: 10; /* Garante que o dropdown fique acima de outros elementos */
+  z-index: 10;
 }
 
 .user-dropdown ul {
@@ -120,5 +125,4 @@ export default {
 .user-dropdown li a:hover {
   background-color: #555;
 }
-
 </style>

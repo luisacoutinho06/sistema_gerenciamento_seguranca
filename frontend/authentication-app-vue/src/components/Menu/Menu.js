@@ -7,13 +7,18 @@ export default {
   data() {
     return {
       user: {},
+      isDropdownVisible: false,
     };
   },
   methods: {
+    toggleDropdown(event) {
+      event.stopPropagation();
+      this.isDropdownVisible = !this.isDropdownVisible;
+    },
     getUser() {
       const token = localStorage.getItem('jwt');
       if (token) {
-        const tokenDecoded = VueJwtDecode.decoded(token);
+        const tokenDecoded = VueJwtDecode.decode(token);
         this.user = tokenDecoded;
       }
     },

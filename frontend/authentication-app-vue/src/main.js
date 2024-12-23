@@ -6,7 +6,11 @@ import router from './router';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'nprogress/nprogress.css';
 
+import MenuComponent from './components/Menu/MenuComponent.vue';
+
 Vue.use(Vuelidate);
+
+Vue.component('MenuComponent', MenuComponent);
 
 Vue.config.productionTip = false;
 
