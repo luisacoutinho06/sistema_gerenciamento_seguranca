@@ -1,5 +1,7 @@
 // DESCRIÇÃO: Arquivo responsável pela lógica do componente.
 
+import { required, email } from 'vuelidate/lib/validators';
+
 export default {
   name: 'LoginComponent',
   data() {
@@ -8,11 +10,26 @@ export default {
         email: null,
         password: null,
       },
+      isSubmitted: false,
     };
   },
 
+  validations: {
+    loginForm: {
+      email: { required, email },
+      password: { required },
+    },
+  },
+
   methods: {
-    loginSubmitUserForm() {},
+    loginSubmitUserForm() {
+      this.isSubmitted = true;
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        return;
+      }
+      alert('SUCCESS!' + JSON.stringify(this.loginForm));
+    },
 
     async submitLoginUser() {},
   },

@@ -7,20 +7,24 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "lint-fix": "npm run lint"
+    "lint-fix": "npm run lint --fix"
   },
   "dependencies": {
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
     "core-js": "^3.8.3",
+    "nprogress": "^0.2.0",
     "vue": "^2.6.14",
     "vue-jwt-decode": "^0.1.0",
     "vue-router": "^3.5.1",
-    "vue-sweetalert": "^0.1.18"
+    "vue-sweetalert": "^0.1.18",
+    "vuelidate": "^0.7.7"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
+    "@types/nprogress": "^0.2.3",
+    "@types/vuelidate": "^0.7.22",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
