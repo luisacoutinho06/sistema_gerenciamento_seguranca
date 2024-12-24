@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Users from '@/components/users/Users.vue';
+import Users from '@/components/users/UsersComponent.vue';
 
 export default {
   components: {

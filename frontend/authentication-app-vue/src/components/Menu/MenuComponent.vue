@@ -8,7 +8,7 @@
 
         <ul class="navbar-items">
           <li><a href="/users">Lista de Usuários</a></li>
-          <li><a href="/home">Inventário de Itens</a></li>
+          <li><a href="/inventarios">Inventário de Itens</a></li>
           <li><a href="/home">Painel de Controle</a></li>
         </ul>
       </div>

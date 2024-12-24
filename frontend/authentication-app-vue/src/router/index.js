@@ -26,7 +26,12 @@ const routes = [
   {
     path: '/users',
     name: 'users',
-    component: () => import('../components/users/Users.vue'),
+    component: () => import('../components/users/UsersComponent.vue'),
+  },
+  {
+    path: '/inventarios',
+    name: 'inventarios',
+    component: () => import('../components/inventarios-itens/InventariosComponent.vue'),
   },
 ];
 
