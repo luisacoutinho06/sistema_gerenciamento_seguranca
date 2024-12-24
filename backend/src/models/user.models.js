@@ -10,8 +10,9 @@ const userSchema = new Schema(
   {
     name: { type: String, maxlength: 50, required: true },
     email: { type: String, maxlength: 30, required: true },
-    role: { type: String, required: true, default: 'usuarioComum',
-    },    password: { type: String, required: true },
+    role: { type: String, required: true, default: 'usuarioComum'    },
+    password: { type: String, required: true },
+    dataDeCriacao: { type: Date, default: Date.now },
     tokens: [
       {
         token: { type: String, require: true },
@@ -37,7 +38,7 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign(
-    { _id: user._id, name: user.name, email: user.email, claim: user.role },
+    { _id: user._id, name: user.name, email: user.email, role: user.role, dataDeCriacao: user.dataDeCriacao },
     "secret"
   );
 

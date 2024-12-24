@@ -33,6 +33,11 @@ const routes = [
     name: 'inventarios',
     component: () => import('../components/inventarios-itens/InventariosComponent.vue'),
   },
+  {
+    path: '/dashboard',
+    name: 'dashboard',
+    component: () => import('../components/dashboard/DashboardComponenet.vue'),
+  },
 ];
 
 const router = new VueRouter({

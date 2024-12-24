@@ -40,3 +40,5 @@ Dentro da pasta frontend/authentication-app-vue:
     npm install chokidar
     npm install --save nprogress
     npm install vuelidate --save
+    npm install chart.js
+
