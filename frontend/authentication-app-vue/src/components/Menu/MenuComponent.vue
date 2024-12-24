@@ -2,12 +2,12 @@
   <div>
     <nav class="navbar">
       <div class="navbar-left">
-        <a href="/" class="logo">
-          <img src="../../assets/wayne_industrias_logo.png" alt="Logo" class="logo-img" />
+        <a href="/home" class="logo">
+          <img src="../../assets/onlyW_logo.png" alt="Logo" class="logo-img" />
         </a>
 
         <ul class="navbar-items">
-          <li><a href="/home">Usuários</a></li>
+          <li><a href="/users">Lista de Usuários</a></li>
           <li><a href="/home">Inventário de Itens</a></li>
           <li><a href="/home">Painel de Controle</a></li>
         </ul>
@@ -15,18 +15,11 @@
 
       <div class="navbar-right">
         <div class="user-menu">
-          <img
-            src="../../assets/logo_user.webp"
-            alt="Usuário"
-            class="user-icon"
-            @click="toggleDropdown"
-            @keydown.enter="toggleDropdown"
-            @keydown.space="toggleDropdown"
-            tabindex="0"
-          />
+          <button class="user-button" @click="toggleDropdown">
+            <img src="../../assets/logo_user.webp" alt="Usuário" class="user-icon" />
+          </button>
         </div>
 
-        <!-- Submenu exibido condicionalmente -->
         <div class="user-dropdown" v-if="isDropdownVisible">
           <ul>
             <li><a href="/home">Perfil</a></li>
@@ -41,8 +34,36 @@
 </template>
 
 <script>
+import VueJwtDecode from 'vue-jwt-decode';
+
 export default {
-  name: 'Menu',
+  name: 'MenuComponent',
+  data() {
+    return {
+      user: {},
+      isDropdownVisible: false,
+    };
+  },
+  methods: {
+    toggleDropdown(event) {
+      event.stopPropagation();
+      this.isDropdownVisible = !this.isDropdownVisible;
+    },
+    getUser() {
+      const token = localStorage.getItem('jwt');
+      if (token) {
+        const tokenDecoded = VueJwtDecode.decode(token);
+        this.user = tokenDecoded;
+      }
+    },
+    logOutUser() {
+      localStorage.removeItem('jwt');
+      this.$router.push('/');
+    },
+  },
+  created() {
+    this.getUser();
+  },
 };
 </script>
 

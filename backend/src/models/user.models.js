@@ -10,7 +10,8 @@ const userSchema = new Schema(
   {
     name: { type: String, maxlength: 50, required: true },
     email: { type: String, maxlength: 30, required: true },
-    password: { type: String, required: true },
+    role: { type: String, required: true, default: 'usuarioComum',
+    },    password: { type: String, required: true },
     tokens: [
       {
         token: { type: String, require: true },
@@ -33,10 +34,10 @@ userSchema.pre("save", async function (next) {
 });
 
 // ==> Este método será responsável por gerar uma autenticação Auth, para o User.
-userSchema.methods.generateAuthToken = async function (params) {
+userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign(
-    { _id: user._id, name: user.name, email: user.email },
+    { _id: user._id, name: user.name, email: user.email, claim: user.role },
     "secret"
   );
 

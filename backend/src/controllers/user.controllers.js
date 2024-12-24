@@ -8,7 +8,6 @@ const User = require("../models/user.models");
 exports.registerNewUser = async (req, res) => {
   try {
     let isUser = await User.find({ email: req.body.email });
-    console.log(isUser);
 
     if (isUser.length >= 1) {
       return res
@@ -17,6 +16,7 @@ exports.registerNewUser = async (req, res) => {
     }
 
     const newUser = new User(req.body);
+    newUser.role = "usuarioComum";
     const user = await newUser.save();
     const token = await newUser.generateAuthToken();
 
@@ -24,7 +24,7 @@ exports.registerNewUser = async (req, res) => {
       .status(201)
       .json({ message: "Usuário criado com sucesso!", user, token });
   } catch (err) {
-    resizeBy.status(400).json({
+    res.status(400).json({
       err: err,
     });
   }
@@ -49,7 +49,7 @@ exports.loginUser = async (req, res) => {
       .status(201)
       .json({ messsage: "Usuário(a) logado(a) com sucesso!", user, token });
   } catch (err) {
-    resizeBy.status(400).json({
+    res.status(400).json({
       err: err,
     });
   }
@@ -59,8 +59,40 @@ exports.returnUserProfile = async (req, res) => {
   try {
     await res.json(req.userData);
   } catch (err) {
-    resizeBy.status(400).json({
+    res.status(400).json({
       err: err,
     });
   }
 };
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    const token = req.header("Authorization").replace('Bearer', '').trim();
+    if (!token) {
+      return res
+        .status(401)
+        .json({ error: "Acesso negado! Token não fornecido." });
+    }
+
+    const user = await User.findOne({ "tokens.token": token });
+    
+    if (!user) {
+      return res.status(401).json({ error: "Token não encontrado no banco de dados ou inválido!" });
+    }
+
+    if (user.role !== "admin") {
+      return res
+        .status(403)
+        .json({
+          error:
+            "Acesso negado! Somente administradores podem visualizar todos os usuários.",
+        });
+    }
+
+    const users = await User.find({});
+    res.status(200).json({ users });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+

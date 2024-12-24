@@ -14,4 +14,7 @@ router.post("/login", userController.loginUser);
 // ==> Rota responsável por trazer os dados do 'User': (GET) localhost:3000/api/v1/userProfile
 router.get("/userProfile", auth, userController.returnUserProfile);
 
+// ==> Rota responsável por trazer todos os usuários registrados: (GET) localhost:3000/api/v1/users
+router.get("/users", auth, userController.getAllUsers);
+
 module.exports = router;
