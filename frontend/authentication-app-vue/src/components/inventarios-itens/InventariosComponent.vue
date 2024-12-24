@@ -14,15 +14,17 @@
             <th>Descrição</th>
             <th>Quantidade</th>
             <th>Valor</th>
+            <th>Tipo de Item</th>
             <th>Ações</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in items" :key="item._id">
+          <tr v-for="item in inventory" :key="item._id">
             <td>{{ item.nome }}</td>
             <td>{{ item.descricao }}</td>
             <td>{{ item.quantidade }}</td>
-            <td>{{ item.valor }}</td>
+            <td>{{ formatBRL(item.valor) }}</td>
+            <td>{{ item.tipoDeItem }}</td>
             <td class="actions">
               <button class="edit-btn" @click="editItem(item, item._id)">Editar</button>
               <button class="delete-btn" @click="deleteItem(item._id)">Excluir</button>
@@ -35,6 +37,7 @@
     </div>
 
     <!-- Modal de Adicionar/Editar Item -->
+
     <div v-if="isModalVisible" class="modal-overlay">
       <div class="modal">
         <h2>{{ isEditMode ? 'Editar Item' : 'Adicionar Item' }}</h2>
@@ -43,17 +46,32 @@
           <input type="text" id="nome" v-model="editingItem.nome" required />
 
           <label for="descricao">Descrição:</label>
-          <input type="text" id="descricao" v-model="editingItem.descricao" required />
+          <textarea id="descricao" v-model="editingItem.descricao" required></textarea>
 
           <label for="quantidade">Quantidade:</label>
-          <input type="number" id="quantidade" v-model="editingItem.quantidade" required />
+          <input type="number"
+          id="quantidade" v-model.number="editingItem.quantidade" required min="1" />
 
           <label for="valor">Valor:</label>
-          <input type="text" id="valor" v-model="editingItem.valor" required />
+          <input
+            type="text"
+            id="valor"
+            v-model="editingItem.valor"
+            @input="formatCurrency"
+            required
+          />
+
+          <label for="tipoDeItem">Tipo de Item:</label>
+          <select id="tipoDeItem" v-model="editingItem.tipoDeItem" required>
+            <option value="1">Veículos</option>
+            <option value="2">Equipamentos</option>
+            <option value="3">Dispositivos de Segurança</option>
+          </select>
 
           <div class="modal-actions">
-            <button type="submit"
-            class="save-btn">{{ isEditMode ? 'Salvar Alterações' : 'Adicionar Item' }}</button>
+            <button type="submit" class="save-btn">
+              {{ isEditMode ? 'Salvar Alterações' : 'Adicionar Item' }}
+            </button>
             <button type="button" @click="closeModal" class="back-btn">Voltar</button>
           </div>
         </form>
@@ -204,41 +222,78 @@ body {
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
-  width: auto;
-  height: auto;
+  width: 100%;
+  max-width: 500px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
-  max-width: 100%;
+  align-items: stretch;
+}
+
+.modal h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #555;
 }
 
 input[type="text"],
-input[type="number"] {
+input[type="number"],
+textarea,
+select {
   width: 100%;
-  padding: 8px;
-  margin-top: 5px;
+  padding: 10px;
   border-radius: 4px;
   border: 1px solid #ddd;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+textarea {
+  resize: none;
+  height: 80px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 .modal-actions {
   display: flex;
   justify-content: space-between;
+  gap: 10px;
   margin-top: 20px;
 }
 
 .save-btn,
 .back-btn {
-  padding: 8px 12px;
+  flex: 1;
+  padding: 10px;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 16px;
 }
 
 .save-btn {
   background-color: #28a745;
   color: white;
+  border: none;
 }
 
 .save-btn:hover {
@@ -247,9 +302,11 @@ input[type="number"] {
 
 .back-btn {
   background-color: #ccc;
+  border: none;
 }
 
 .back-btn:hover {
   background-color: #999;
 }
+
 </style>

@@ -1,5 +1,5 @@
 import VueJwtDecode from 'vue-jwt-decode';
-import MenuComponent from '../Menu/MenuComponent.vue';
+import MenuComponent from '../menu/MenuComponent.vue';
 
 export default {
   name: 'HomeComponent',

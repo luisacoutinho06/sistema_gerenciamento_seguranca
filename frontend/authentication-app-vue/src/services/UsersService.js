@@ -1,3 +1,4 @@
+import swal from 'sweetalert';
 import Api from './Api';
 
 export default {
@@ -40,6 +41,13 @@ export default {
       });
       return response;
     } catch (error) {
+      if (error.response && error.response.status === 409) {
+        swal({
+          title: 'Oops!',
+          text: error.response.data.message,
+          icon: 'error',
+        });
+      }
       throw new Error('Erro ao atualizar o usuário');
     }
   },

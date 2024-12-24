@@ -11,6 +11,7 @@ const app = express();
 // ===> Rotas da API:
 const index = require("./routes/index");
 const userRoutes = require("./routes/user.routes");
+const itensRoutes = require("./routes/inventarioItens.routes");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -22,5 +23,6 @@ app.set('mongoose connection', mongooseConnection);
 
 app.use(index);
 app.use("/api/v1", userRoutes);
+app.use("/api/v1", itensRoutes);
 
 module.exports = app;

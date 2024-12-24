@@ -3,7 +3,7 @@ const router = express.Router();
 const inventarioItensController = require("../controllers/inventarioItens.controllers");
 
 // ==> Rota responsável por criar um novo 'item': (POST) localhost:3000/api/v1/adicionandoItem
-router.post("/adicionandoItem", inventarioItensController.adicioonandoItem);
+router.post("/adicionandoItem", inventarioItensController.adicionandoItem);
 
 // ==> Rota responsável por trazer todos os itens registrados: (GET) localhost:3000/api/v1/itens
 router.get("/itens", inventarioItensController.getAllItens);

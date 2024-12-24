@@ -1,69 +1,120 @@
+/* eslint-disable no-underscore-dangle */
+import swal from 'sweetalert';
+import ItemService from '../../services/InventariosService';
+
 export default {
   data() {
     return {
       inventory: [],
       isLoading: false,
-      isAddModalVisible: false,
-      isEditModalVisible: false,
-      newItem: {
-        name: '',
-        description: '',
-        quantity: '',
-        price: '',
-      },
+      isModalVisible: false,
+      isEditMode: false,
       editingItem: {
-        id: '',
-        name: '',
-        description: '',
-        quantity: '',
-        price: '',
+        nome: '',
+        descricao: '',
+        quantidade: 1,
+        valor: '',
+        tipoDeItem: 'equipamentos',
       },
     };
   },
   methods: {
-    openAddModal() {
-      this.isAddModalVisible = true;
+    async loadItems() {
+      this.isLoading = true;
+      try {
+        const items = await ItemService.getAllItens();
+        this.inventory = items.itens;
+      } catch (error) {
+        swal('Erro', 'Não foi possível carregar os itens.', 'error');
+      } finally {
+        this.isLoading = false;
+      }
     },
-    closeAddModal() {
-      this.isAddModalVisible = false;
-      this.resetNewItem();
-    },
-    openEditModal(item) {
-      this.editingItem = { ...item };
-      this.isEditModalVisible = true;
-    },
-    closeEditModal() {
-      this.isEditModalVisible = false;
-      this.resetEditingItem();
-    },
-    resetNewItem() {
-      this.newItem = {
-        name: '', description: '', quantity: '', price: '',
-      };
-    },
-    resetEditingItem() {
+
+    openModal() {
+      this.isModalVisible = true;
+      this.isEditMode = false;
       this.editingItem = {
-        id: '', name: '', description: '', quantity: '', price: '',
+        nome: '',
+        descricao: '',
+        quantidade: 1,
+        valor: '',
+        tipoDeItem: 'equipamentos',
       };
     },
-    saveItem() {
-      console.log('Novo item salvo:', this.newItem);
-      this.closeAddModal();
+
+    closeModal() {
+      this.isModalVisible = false;
     },
-    updateItem() {
-      console.log('Item atualizado:', this.editingItem);
-      this.closeEditModal();
+
+    async saveItem() {
+      if (this.isEditMode) {
+        await this.updateItem();
+      } else {
+        await this.addItem();
+      }
     },
-    deleteItem(id) {
-      console.log('Item excluído:', id);
+
+    async addItem() {
+      try {
+        await ItemService.adicionandoItem(this.editingItem);
+        swal('Sucesso', 'Item adicionado com sucesso!', 'success');
+        this.loadItems();
+        this.closeModal();
+      } catch (error) {
+        swal('Erro', 'Não foi possível adicionar o item.', 'error');
+      }
     },
+
+    async updateItem() {
+      try {
+        await ItemService.updateItem(this.editingItem._id, this.editingItem);
+        swal('Sucesso', 'Item atualizado com sucesso!', 'success');
+        this.loadItems();
+        this.closeModal();
+      } catch (error) {
+        swal('Erro', 'Não foi possível atualizar o item.', 'error');
+      }
+    },
+
+    async editItem(item, id) {
+      this.isEditMode = true;
+      this.editingItem = { ...item };
+      this.isModalVisible = true;
+    },
+
+    async deleteItem(id) {
+      try {
+        await ItemService.deleteItem(id);
+        swal('Sucesso', 'Item excluído com sucesso!', 'success');
+        this.loadItems();
+      } catch (error) {
+        swal('Erro', 'Não foi possível excluir o item.', 'error');
+      }
+    },
+
+    formatCurrency(event) {
+      let { value } = event.target;
+      value = value.replace(/\D/g, '');
+      value = (value / 100).toFixed(2);
+      value = value.replace('.', ',');
+      this.editingItem.valor = `R$ ${value}`;
+    },
+    formatBRL(value) {
+      if (typeof value === 'number') {
+        return `R$ ${value.toFixed(2).replace('.', ',')}`;
+      } if (typeof value === 'string') {
+        // eslint-disable-next-line no-param-reassign
+        value = value.replace(/\D/g, '');
+        // eslint-disable-next-line no-param-reassign
+        value = (parseInt(value, 10) / 100).toFixed(2);
+        return `R$ ${value.replace('.', ',')}`;
+      }
+      return value;
+    },
+
   },
   created() {
-    this.isLoading = true;
-    setTimeout(() => {
-      this.isLoading = false;
-      this.inventory = [
-      ];
-    }, 1000);
+    this.loadItems();
   },
 };

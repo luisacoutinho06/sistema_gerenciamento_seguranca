@@ -1,9 +1,15 @@
+import swal from 'sweetalert';
 import Api from './Api';
 
 export default {
   async adicionandoItem(itemData) {
     try {
-      const response = await Api.post('/adicionandoItem', itemData);
+      const token = localStorage.getItem('jwt');
+      const response = await Api().post('/adicionandoItem', itemData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data;
     } catch (error) {
       console.error('Erro ao adicionar item:', error);
@@ -13,7 +19,13 @@ export default {
 
   async getAllItens() {
     try {
-      const response = await Api.get('/itens');
+      const token = localStorage.getItem('jwt');
+      const response = await Api().get('/itens', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response);
       return response.data;
     } catch (error) {
       console.error('Erro ao obter itens:', error);
@@ -23,7 +35,12 @@ export default {
 
   async deleteItem(id) {
     try {
-      const response = await Api.delete(`/deleteItem/${id}`);
+      const token = localStorage.getItem('jwt');
+      const response = await Api().delete(`/deleteItem/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data;
     } catch (error) {
       console.error('Erro ao deletar item:', error);
@@ -33,7 +50,12 @@ export default {
 
   async updateItem(id, updatedData) {
     try {
-      const response = await Api.put(`/editItem/${id}`, updatedData);
+      const token = localStorage.getItem('jwt');
+      const response = await Api().put(`/editItem/${id}`, updatedData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data;
     } catch (error) {
       console.error('Erro ao atualizar item:', error);

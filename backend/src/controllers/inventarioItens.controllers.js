@@ -20,12 +20,13 @@ exports.adicionandoItem = async (req, res) => {
     });
 
     const item = await newItem.save();
-
     res.status(201).json({ message: "Item adicionado com sucesso!", item });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 };
+
+
 
 // Método responsável por buscar todos os itens
 exports.getAllItens = async (req, res) => {
