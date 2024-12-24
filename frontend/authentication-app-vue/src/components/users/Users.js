@@ -18,6 +18,7 @@ export default {
   computed: {
     roleName() {
       const roleMapping = {
+        usuarioComum: 'Usuário Comum',
         funcionario: 'Funcionário',
         gerente: 'Gerente',
         administrador: 'Administrador',

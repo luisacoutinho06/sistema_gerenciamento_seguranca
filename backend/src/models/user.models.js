@@ -10,7 +10,7 @@ const userSchema = new Schema(
   {
     name: { type: String, maxlength: 50, required: true },
     email: { type: String, maxlength: 30, required: true },
-    role: { type: String, required: true, default: 'funcionario',
+    role: { type: String, required: true, default: 'usuarioComum',
     },    password: { type: String, required: true },
     tokens: [
       {

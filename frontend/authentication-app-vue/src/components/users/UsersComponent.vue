@@ -17,6 +17,7 @@
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
             <td>
+              <span v-if="user.role === 'usuarioComum'">Usuário Comum</span>
               <span v-if="user.role === 'funcionario'">Funcionário</span>
               <span v-if="user.role === 'gerente'">Gerente</span>
               <span v-if="user.role === 'administrador'">Administrador</span>
@@ -44,6 +45,9 @@
 
           <label for="role">Tipo de usuário:</label>
           <select id="role" v-model="editingUser.role" required>
+            <option value="usuarioComum" :selected="editingUser.role === 'usuarioComum'">
+              Usuário Comum
+            </option>
             <option value="funcionario" :selected="editingUser.role === 'funcionario'">
               Funcionário
             </option>
