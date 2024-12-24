@@ -80,7 +80,7 @@ exports.getAllUsers = async (req, res) => {
       return res.status(401).json({ error: "Token não encontrado no banco de dados ou inválido!" });
     }
 
-    if (user.role !== "admin") {
+    if (user.role !== "administrador") {
       return res
         .status(403)
         .json({
@@ -96,3 +96,65 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
+// Método responsável por editar o nome, email e tipo de usuário
+exports.updateUser = async (req, res) => {
+  try {
+    const token = req.header("Authorization").replace('Bearer', '').trim();
+    if (!token) {
+      return res
+        .status(401)
+        .json({ error: "Acesso negado! Token não fornecido." });
+    }
+
+    const userId = req.params.id;
+    const { name, email, role } = req.body;
+
+    if (email) {
+      const existingUser = await User.findOne({ email });
+      if (existingUser && existingUser._id.toString() !== userId) {
+        return res.status(409).json({ message: "Este email já está em uso!" });
+      }
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { name, email, role },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "Usuário não encontrado!" });
+    }
+
+    res.status(200).json({ message: "Usuário atualizado com sucesso!", updatedUser });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+// Método responsável por deletar o usuário
+exports.deleteUser = async (req, res) => {
+  try {
+    const token = req.header("Authorization").replace('Bearer', '').trim();
+    if (!token) {
+      return res
+        .status(401)
+        .json({ error: "Acesso negado! Token não fornecido." });
+    }
+    console.log(token);
+
+    const userId = req.params.id;
+    console.log(userId);
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "Usuário não encontrado!" });
+    }
+
+    await User.findByIdAndDelete(userId);
+
+    res.status(200).json({ message: "Usuário deletado com sucesso!" });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};

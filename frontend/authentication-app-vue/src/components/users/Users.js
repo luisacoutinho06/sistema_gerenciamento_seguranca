@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import userService from '../../services/UsersService';
 
 export default {
@@ -5,25 +6,67 @@ export default {
     return {
       users: [],
       isLoading: false,
+      isModalVisible: false,
+      editingUser: {
+        id: null,
+        name: '',
+        email: '',
+        role: '',
+      },
     };
   },
+  computed: {
+    roleName() {
+      const roleMapping = {
+        funcionario: 'Funcionário',
+        gerente: 'Gerente',
+        administrador: 'Administrador',
+      };
+      return roleMapping[this.editingUser.role] || this.editingUser.role;
+    },
+  },
   methods: {
+    // Método para buscar todos os usuários
     async fetchUsers() {
       this.isLoading = true;
       try {
         const response = await userService.getAllUsers();
-
         this.users = response.data.users;
         this.isLoading = false;
       } catch (error) {
         this.isLoading = false;
+        console.error(error);
       }
     },
+
+    // Método para editar um usuário
     editUser(user) {
-      alert(`Editando usuário: ${user.name}`);
+      this.editingUser = { ...user };
+      this.isModalVisible = true;
     },
-    deleteUser(userId) {
-      this.users = this.users.filter((user) => user.id !== userId);
+
+    // Método para salvar a edição do usuário
+    async saveUser() {
+      try {
+        await userService.updateUser(this.editingUser._id, this.editingUser);
+        this.isModalVisible = false;
+        this.fetchUsers();
+      } catch (error) {
+        console.error('Erro ao salvar usuário:', error);
+      }
+    },
+
+    closeModal() {
+      this.isModalVisible = false;
+    },
+
+    async deleteUser(userId) {
+      try {
+        await userService.deleteUser(userId);
+        this.fetchUsers();
+      } catch (error) {
+        console.error('Erro ao deletar usuário:', error);
+      }
     },
   },
   created() {
