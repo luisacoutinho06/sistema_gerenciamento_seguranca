@@ -141,10 +141,8 @@ exports.deleteUser = async (req, res) => {
         .status(401)
         .json({ error: "Acesso negado! Token não fornecido." });
     }
-    console.log(token);
 
     const userId = req.params.id;
-    console.log(userId);
 
     const user = await User.findById(userId);
     if (!user) {

@@ -5,10 +5,10 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema(
   {
     nome: { type: String, maxlength: 25, required: true },
-    descricao: { type: String, maxlength: 60, required: true },
-    quantidade: { type: String, maxlength: 30, required: true },
+    descricao: { type: String, maxlength: 1000, required: true },
+    quantidade: { type: String, maxlength: 10, required: true },
     tipoDeItem: { type: String, required: true, default: 'funcionario'},
-    valor: { type: String, required: true },
+    valor: { type: Number, required: true },
     dataDeCriacao: { type: Date, default: Date.now },
   },
   {

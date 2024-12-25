@@ -15,18 +15,7 @@
 
       <div class="navbar-right">
         <div class="user-menu">
-          <button class="user-button" @click="toggleDropdown">
-            <img src="../../assets/logo_user.webp" alt="Usuário" class="user-icon" />
-          </button>
-        </div>
-
-        <div class="user-dropdown" v-if="isDropdownVisible">
-          <ul>
-            <li><a href="/home">Perfil</a></li>
-            <li>
-              <button @click="logOutUser" class="logout-btn">LogOut</button>
-            </li>
-          </ul>
+          <button @click="logOutUser" class="logout-btn">LogOut</button>
         </div>
       </div>
     </nav>
@@ -41,14 +30,9 @@ export default {
   data() {
     return {
       user: {},
-      isDropdownVisible: false,
     };
   },
   methods: {
-    toggleDropdown(event) {
-      event.stopPropagation();
-      this.isDropdownVisible = !this.isDropdownVisible;
-    },
     getUser() {
       const token = localStorage.getItem('jwt');
       if (token) {

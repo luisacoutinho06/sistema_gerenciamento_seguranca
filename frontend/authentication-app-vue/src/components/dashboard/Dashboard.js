@@ -1,6 +1,3 @@
-import { ref, onMounted } from 'vue';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Chart } from 'chart.js';
 import dashboardService from '../../services/dashboardService';
 
 export default {
@@ -8,16 +5,21 @@ export default {
   data() {
     return {
       totalEmployees: 0,
-      securityIncidents: 0,
-      availableResources: 0,
-      recentActivities: 0,
+      dispositivosDeSegurancaCadastrados: 0,
+      veiculosCadastradosNoDia: 0,
+      inventarioDeEquipamentoCadastrado: 0,
       latestUsers: [],
       recentActivitiesLast24Hours: 0,
       last10Activities: [],
-      itemsChartData: [],
     };
   },
   methods: {
+    formatBRL(value) {
+      return new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }).format(value);
+    },
     async fetchData() {
       try {
         const usersResponse = await dashboardService.getAllUsers();
@@ -25,71 +27,77 @@ export default {
         const items = await dashboardService.getAllItens();
 
         // Total de Usuários
-        this.totalEmployees = users.length.count();
+        this.totalEmployees = users.length;
 
-        // Últimos 3 Usuários
-        this.latestUsers = users.slice(0, 3);
-
-        // Últimas 10 Atividades
-        this.last10Activities = items.slice(0, 10);
-
-        // Atividades nas últimas 24 horas
-        const now = new Date();
-        const last24Hours = items.filter((item) => {
-          const creationDate = new Date(item.DataDeCriacao);
-          return (now - creationDate) <= (24 * 60 * 60 * 1000);
-        });
-        this.recentActivitiesLast24Hours = last24Hours.length;
-
-        // Gráfico de Tipos de Itens Cadastrados no Último Mês
-        const lastMonth = new Date();
-        lastMonth.setMonth(lastMonth.getMonth() - 1);
-        const itemTypesCount = {
-          1: 0, // Veículos
-          2: 0, // Equipamentos
-          3: 0, // Dispositivos de Segurança
+        // Mapeamento dos roles para nomes amigáveis
+        const roleMapping = {
+          usuarioComum: 'Usuário Comum',
+          gerente: 'Gerente',
+          administrador: 'Administrador',
+          funcionario: 'Funcionário',
         };
-        items.forEach((item) => {
-          const creationDate = new Date(item.DataDeCriacao);
-          if (creationDate > lastMonth) {
-            itemTypesCount[item.tipoId] += 1;
+
+        // Gerar os últimos 3 usuários formatados
+        this.latestUsers = users
+          .reverse()
+          .slice(0, 3)
+          .map((user) => {
+            const roleFormatted = roleMapping[user.role] || user.role;
+            return `${user.name} - ${user.email} - ${roleFormatted}`;
+          })
+          .join('<br>');
+
+        // Últimas 5 Atividades
+        this.last5Activities = items.itens.reverse().slice(0, 5);
+
+        const now = new Date();
+        const twentyFourHoursAgo = new Date(now - 24 * 60 * 60 * 1000);
+
+        let veiculos = 0;
+        let equipamentos = 0;
+        let dispositivos = 0;
+        let recentActivities = 0;
+
+        const recentItems = [];
+
+        // Iterar sobre os itens
+        items.itens.forEach((item) => {
+          const dataDeCriacao = new Date(item.dataDeCriacao);
+
+          // Verifica se a dataDeCriacao é nas últimas 24 horas
+          if (dataDeCriacao >= twentyFourHoursAgo) {
+            // eslint-disable-next-line no-plusplus
+            recentActivities++;
+            recentItems.push(item);
+          }
+          if (parseFloat(item.tipoDeItem) === 1) {
+            // eslint-disable-next-line no-plusplus
+            veiculos++;
+          } else if (parseFloat(item.tipoDeItem) === 2) {
+            // eslint-disable-next-line no-plusplus
+            equipamentos++;
+          } else if (parseFloat(item.tipoDeItem) === 3) {
+            // eslint-disable-next-line no-plusplus
+            dispositivos++;
           }
         });
-        this.itemsChartData = itemTypesCount;
 
-        // Outras lógicas de cálculo (como segurançaIncidents, etc.)
-        // Simulei o valor de atividades como exemplo
-        this.securityIncidents = 5;
-        this.availableResources = 120;
-        this.recentActivities = 50;
+        // Atualiza as variáveis do Vue
+        this.veiculosCadastradosNoDia = veiculos;
+        this.dispositivosDeSegurancaCadastrados = dispositivos;
+        this.inventarioDeEquipamentoCadastrado = equipamentos;
+        this.recentActivitiesLast24Hours = recentActivities;
+
+        console.log(this.veiculosCadastradosNoDia);
+        console.log(this.dispositivosDeSegurancaCadastrados);
+        console.log(this.inventarioDeEquipamentoCadastrado);
+        console.log(this.recentActivitiesLast24Hours);
       } catch (error) {
         console.error('Erro ao carregar dados:', error);
       }
     },
-
-    // Método para desenhar o gráfico
-    drawChart() {
-      const ctx = document.getElementById('itemsChart').getContext('2d');
-      // eslint-disable-next-line no-new, no-undef
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['Veículos', 'Equipamentos', 'Dispositivos de Segurança'],
-          datasets: [{
-            label: 'Quantidade de Itens no Último Mês',
-            data: [this.itemsChartData[1], this.itemsChartData[2], this.itemsChartData[3]],
-            backgroundColor: ['#28a745', '#007bff', '#dc3545'],
-          }],
-        },
-      });
-    },
   },
   mounted() {
     this.fetchData();
-  },
-  watch: {
-    itemsChartData() {
-      this.drawChart();
-    },
   },
 };

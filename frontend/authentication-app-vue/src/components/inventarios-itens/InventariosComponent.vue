@@ -21,10 +21,20 @@
         <tbody>
           <tr v-for="item in inventory" :key="item._id">
             <td>{{ item.nome }}</td>
-            <td>{{ item.descricao }}</td>
+            <td>
+              <span v-if="item.descricao.length > 80" :title="item.descricao">
+                {{ item.descricao.slice(0, 80) }}...</span
+              >
+              <span v-else>{{ item.descricao }}</span>
+            </td>
             <td>{{ item.quantidade }}</td>
             <td>{{ formatBRL(item.valor) }}</td>
-            <td>{{ item.tipoDeItem }}</td>
+            <td>
+              <span v-if="parseFloat(item.tipoDeItem) === 1">Veículo</span>
+              <span v-else-if="parseFloat(item.tipoDeItem) === 2">Equipamento</span>
+              <span v-else-if="parseFloat(item.tipoDeItem) === 3">Dispositivo de Segurança</span>
+              <span v-else>Outro</span>
+            </td>
             <td class="actions">
               <button class="edit-btn" @click="editItem(item, item._id)">Editar</button>
               <button class="delete-btn" @click="deleteItem(item._id)">Excluir</button>
@@ -40,17 +50,28 @@
 
     <div v-if="isModalVisible" class="modal-overlay">
       <div class="modal">
-        <h2>{{ isEditMode ? 'Editar Item' : 'Adicionar Item' }}</h2>
+        <h2>{{ isEditMode ? "Editar Item" : "Adicionar Item" }}</h2>
         <form @submit.prevent="saveItem">
           <label for="nome">Nome:</label>
           <input type="text" id="nome" v-model="editingItem.nome" required />
 
           <label for="descricao">Descrição:</label>
-          <textarea id="descricao" v-model="editingItem.descricao" required></textarea>
+          <textarea
+            id="descricao"
+            v-model="editingItem.descricao"
+            required
+            maxlength="1000"
+          >
+          </textarea>
 
           <label for="quantidade">Quantidade:</label>
-          <input type="number"
-          id="quantidade" v-model.number="editingItem.quantidade" required min="1" />
+          <input
+            type="number"
+            id="quantidade"
+            v-model.number="editingItem.quantidade"
+            required
+            min="1"
+          />
 
           <label for="valor">Valor:</label>
           <input
@@ -70,7 +91,7 @@
 
           <div class="modal-actions">
             <button type="submit" class="save-btn">
-              {{ isEditMode ? 'Salvar Alterações' : 'Adicionar Item' }}
+              {{ isEditMode ? "Salvar Alterações" : "Adicionar Item" }}
             </button>
             <button type="button" @click="closeModal" class="back-btn">Voltar</button>
           </div>
@@ -114,7 +135,7 @@ body {
   padding: 2rem;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
   width: 100%;
-  max-width: 900px;
+  max-width: 2000px;
 }
 
 .title {
@@ -308,5 +329,4 @@ select:focus {
 .back-btn:hover {
   background-color: #999;
 }
-
 </style>

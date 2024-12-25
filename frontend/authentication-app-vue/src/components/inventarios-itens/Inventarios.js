@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 import swal from 'sweetalert';
 import ItemService from '../../services/InventariosService';
@@ -57,7 +58,18 @@ export default {
 
     async addItem() {
       try {
-        await ItemService.adicionandoItem(this.editingItem);
+        const valorEditado = parseFloat(
+          this.editingItem.valor
+            .replace(/\./g, '')
+            .replace(',', '.')
+            .replace('R$ ', ''),
+        );
+        const itemParaAdicionar = {
+          ...this.editingItem,
+          valor: parseFloat(valorEditado),
+        };
+
+        await ItemService.adicionandoItem(itemParaAdicionar);
         swal('Sucesso', 'Item adicionado com sucesso!', 'success');
         this.loadItems();
         this.closeModal();
@@ -68,7 +80,18 @@ export default {
 
     async updateItem() {
       try {
-        await ItemService.updateItem(this.editingItem._id, this.editingItem);
+        const valorEditado = parseFloat(
+          this.editingItem.valor
+            .replace(/\./g, '')
+            .replace(',', '.')
+            .replace('R$ ', ''),
+        );
+        const itemParaAdicionar = {
+          ...this.editingItem,
+          valor: parseFloat(valorEditado),
+        };
+
+        await ItemService.updateItem(this.editingItem._id, itemParaAdicionar);
         swal('Sucesso', 'Item atualizado com sucesso!', 'success');
         this.loadItems();
         this.closeModal();
@@ -97,18 +120,26 @@ export default {
       let { value } = event.target;
       value = value.replace(/\D/g, '');
       value = (value / 100).toFixed(2);
-      value = value.replace('.', ',');
+      value = new Intl.NumberFormat('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }).format(value);
       this.editingItem.valor = `R$ ${value}`;
     },
     formatBRL(value) {
       if (typeof value === 'number') {
-        return `R$ ${value.toFixed(2).replace('.', ',')}`;
-      } if (typeof value === 'string') {
-        // eslint-disable-next-line no-param-reassign
+        return `R$ ${new Intl.NumberFormat('pt-BR', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(value)}`;
+      }
+      if (typeof value === 'string') {
         value = value.replace(/\D/g, '');
-        // eslint-disable-next-line no-param-reassign
         value = (parseInt(value, 10) / 100).toFixed(2);
-        return `R$ ${value.replace('.', ',')}`;
+        return `R$ ${new Intl.NumberFormat('pt-BR', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(value)}`;
       }
       return value;
     },
