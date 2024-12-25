@@ -1,3 +1,4 @@
+<!-- eslint-disable max-len -->
 <template>
   <div>
     <nav class="navbar">
@@ -7,9 +8,14 @@
         </a>
 
         <ul class="navbar-items">
-          <li><a href="/users">Lista de Usuários</a></li>
-          <li><a href="/inventarios">Inventário de Itens</a></li>
-          <li><a href="/dashboard">Painel de Controle</a></li>
+          <!-- Exibir 'Lista de Usuários' apenas para Administradores -->
+          <li v-if="user.role === 'administrador'"><a href="/users">Lista de Usuários</a></li>
+
+          <!-- Exibir 'Inventário de Itens' para Gerentes, Administradores e Funcionários -->
+          <li v-if="user.role === 'administrador' || user.role === 'gerente' || user.role === 'funcionario'"><a href="/inventarios">Inventário de Itens</a></li>
+
+          <!-- Exibir 'Painel de Controle' apenas para Administradores e Gerentes -->
+          <li v-if="user.role === 'administrador' || user.role === 'gerente'"><a href="/dashboard">Painel de Controle</a></li>
         </ul>
       </div>
 
