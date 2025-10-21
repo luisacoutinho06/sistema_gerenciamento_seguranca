@@ -21,7 +21,7 @@
 - Painel interativo que exibe **dados relevantes sobre segurança, recursos e atividades internas**.  
 - Ajuda na tomada de decisões com informações claras e organizadas.  
 
-## ⚙️ Tecnologias Utilizadas  
+## Tecnologias Utilizadas  
 
 | Tecnologia | Função no Projeto |
 |------------|-----------------|
@@ -33,14 +33,14 @@
 | ![JWT](https://img.shields.io/badge/JWT-000000?style=flat&logo=json-web-tokens&logoColor=white) | Autenticação segura de usuários |
 | ![bcrypt](https://img.shields.io/badge/bcrypt-563D7C?style=flat&logo=hashnode&logoColor=white) | Criptografia de senhas |
 
-## 🚀 Funcionalidades Implementadas  
+## Funcionalidades Implementadas  
 - Cadastro e login de usuários com diferentes permissões  
 - Criação, atualização e exclusão de recursos internos  
 - Dashboard com visualização de dados de segurança  
 - Rotas protegidas com autenticação JWT  
 - Criptografia de senhas com bcrypt  
 
-## 💻 Como Rodar o Projeto  
+## Como Rodar o Projeto  
 
 ### Backend  
 ```bash
